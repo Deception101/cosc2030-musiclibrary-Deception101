@@ -91,3 +91,22 @@ void addTrack(vector<MusicTrack>& library) {
     library.push_back(track);
     cout << "Track added successfully.\n\n";
 }
+
+void displayLibrary(const vector<MusicTrack>& library) {
+    if (library.empty() ) {
+        cout << "The library is empty.\n\n";
+        return;
+    }
+
+    cout << "\n==== Music Library (" << library.size() << " tracks) ====\n";
+    for (size_t i = 0; i < library.size(); ++i) {
+        const MusicTrack& t = library[i];
+        cout << i + 1 << ". " << t.title << " - " << t.artist << "\n";
+        cout << "   Album: " << t.album << "\n";
+        cout << "   Duration: " << t.duration << " sec\n";
+        cout << "   Genre: " << t.genre << "\n";
+        cout << "   Release Year: " << t.releaseYear << "\n";
+    }
+    cout << "\n";
+
+}
