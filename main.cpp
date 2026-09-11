@@ -5,12 +5,12 @@
 #include <limits>
 
 using namespace std;
-
+//acts as one track in the music library
 struct MusicTrack {
     string title;
     string artist;
     string album;
-    int duration;
+    int duration; // in seconds
     string genre;
     int releaseYear;
 };
@@ -40,6 +40,7 @@ int main() {
         }
         cin.ignore(numeric_limits<streamsize>::max(), '\n');
 
+// loops the options until the users exits
         switch (choice) {
             case 1: addTrack(library); break;
             case 2: displayLibrary(library); break;
@@ -65,7 +66,9 @@ void printMenu() {
     cout << "Enter your choice: " ;
 }
 
+
 void addTrack(vector<MusicTrack>& library) {
+    // Asks the user for each field and adds the new track to the library
     MusicTrack track;
 
     cout << "Enter track title: ";
@@ -93,6 +96,7 @@ void addTrack(vector<MusicTrack>& library) {
 }
 
 void displayLibrary(const vector<MusicTrack>& library) {
+    //shows every track stored in the library
     if (library.empty() ) {
         cout << "The library is empty.\n\n";
         return;
