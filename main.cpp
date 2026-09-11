@@ -108,5 +108,34 @@ void displayLibrary(const vector<MusicTrack>& library) {
         cout << "   Release Year: " << t.releaseYear << "\n";
     }
     cout << "\n";
+}
 
+void writesStringToFile(ofstream& out, const string& str) {
+    size_t len = str.size();
+    out.write(reinterpret_cast<const char*>(&len), sizeof(len));
+    out.write(str.c_str(), static_cast<streamsize>(len));
+}
+
+void saveLibraryToFile(const vector<MusicTrack>& library, const string& filename) {
+ofstream outFile(filename, ios::binary | ios::trunc);
+    if (!outFile) {
+        cout << "Error: could not open file for writing.\n\n";
+        return;
+}
+
+
+size_t count = library.size();
+outFile.write (reinterpret_cast<const char*>(&count), sizeof(count));
+
+for (const MusicTrack& t : library) {
+    writesStringToFile(outFile, t.title);
+    writesStringToFile(outFile, t.artist);
+    writesStringToFile(outFile, t.album);
+    outFile.write(reinterpret_cast<const char*> (&t.duration), sizeof(t.duration));
+     writesStringToFile(outFile, t.genre);
+     outFile.write(reinterpret_cast<const char*> (&t.releaseYear), sizeof(t.releaseYear));
+}
+
+outFile.close();
+cout << "Library saved to " << filename << " (" << count << " tracks).\n\n";
 }
