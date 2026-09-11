@@ -22,6 +22,44 @@ void loadLibraryFromFile(vector<MusicTrack> & library, const string& filename);
 
 
 int main() {
-    
+    vector<MusicTrack> library;
+    const string filename = "musiclibrary.dat";
+    int choice = -1;
+
+    do {
+        printMenu();
+        cin >> choice;
+
+        if (cin.fail()) {
+            cin.clear();
+            cin.ignore(numeric_limits<streamsize>::max(), '\n');
+            cout << "Invalid input. Please enter a number.\n\n";
+            continue;
+
+        }
+        cin.ignore(numeric_limits<streamsize>::max(), '\n');
+
+        switch (choice) {
+            case 1: addTrack(library); break;
+            case 2: displayLibrary(library); break;
+            case 3: saveLibraryToFile(library,filename); break;
+            case 4: loadLibraryFromFile(library,filename); break;
+            case 5: cout << "Existing Music Library. Goodbye\n"; break;
+            default: cout << "Invalid choice. Select a a valid option\n\n";
+        }
+
+}
+    while (choice !=5);
+
     return 0;
+}
+
+void printMenu() {
+    cout << "==== usic Library Menu ====\n";
+    cout << "1. Add Track\n";
+    cout << "2. Display Library\n";
+    cout << "3. Save Library to File\n";
+    cout << "4. Load Library from File\n";
+    cout << "5. Exit\n";
+    cout << "Enter your choice: " ;
 }
