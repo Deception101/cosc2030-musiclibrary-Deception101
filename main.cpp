@@ -116,6 +116,16 @@ void writesStringToFile(ofstream& out, const string& str) {
     out.write(str.c_str(), static_cast<streamsize>(len));
 }
 
+string readStringFromFile(ifstream& in) {
+    size_t len = 0;
+    in.read(reinterpret_cast<char*>(&len), sizeof(len));
+    string str(len, '\0');
+    if (len > 0) {
+        in.read(&str[0], static_cast<streamsize>(len));
+    }
+    return str;
+}
+
 void saveLibraryToFile(const vector<MusicTrack>& library, const string& filename) {
 ofstream outFile(filename, ios::binary | ios::trunc);
     if (!outFile) {
@@ -138,4 +148,31 @@ for (const MusicTrack& t : library) {
 
 outFile.close();
 cout << "Library saved to " << filename << " (" << count << " tracks).\n\n";
+}
+
+void loadLibraryFromFile(vector<MusicTrack>& library, const string& filename) {
+    ifstream inFile(filename, ios::binary);
+    if (!inFile) {
+        cout << "Error: could not open file for reading. Has it been saved yet?\n\n";
+        return;
+    }
+
+    library.clear();
+    
+    size_t count = 0;
+    inFile.read(reinterpret_cast<char*>(&count), sizeof(count));
+
+    for (size_t i = 0; i < count && inFile; ++i) {
+        MusicTrack t;
+        t.title = readStringFromFile(inFile);
+        t.artist = readStringFromFile(inFile);
+        t.album = readStringFromFile(inFile);
+        inFile.read(reinterpret_cast<char*>(&t.duration), sizeof(t.duration));
+        t.genre = readStringFromFile(inFile);
+        inFile.read(reinterpret_cast<char*>(&t.releaseYear), sizeof(t.releaseYear));
+        library.push_back(t);
+
+    }
+inFile.close();
+cout << ":Loaded " << library.size() << " tracks from " << filename << ".\n\n";
 }
